@@ -5,8 +5,6 @@ import java.util.*;
 
 /**
  * This program demonstrates the use of proxies.
- * @version 1.00 2000-04-13
- * @author Cay Horstmann
  */
 public class ProxyTest
 {
@@ -14,7 +12,7 @@ public class ProxyTest
    {
       Object[] elements = new Object[1000];
 
-      // fill elements with proxies for the integers 1 ... 1000
+      // 生成1000个Integer的代理类加入数组中
       for (int i = 0; i < elements.length; i++)
       {
          Integer value = i + 1;
@@ -23,28 +21,28 @@ public class ProxyTest
          elements[i] = proxy;
       }
 
-      // construct a random integer
+      // 构造一个随机整数key
       Integer key = new Random().nextInt(elements.length) + 1;
 
-      // search for the key
+      // 使用binarySearch查找该key
       int result = Arrays.binarySearch(elements, key);
 
-      // print match if found
+      // 打印查找到的key值（如果找到）
       if (result >= 0) System.out.println(elements[result]);
    }
 }
 
 /**
- * An invocation handler that prints out the method name and parameters, then
- * invokes the original method
+ * 该调用处理器打印方法的参数（包含隐含参数）以及方法名
+ * 并调用被代理对象的方法
  */
 class TraceHandler implements InvocationHandler
 {
    private Object target;
 
    /**
-    * Constructs a TraceHandler
-    * @param t the implicit parameter of the method call
+    * 构造器方法
+    * @param target 是被调用方法的隐含参数
     */
    public TraceHandler(Object t)
    {
@@ -53,11 +51,11 @@ class TraceHandler implements InvocationHandler
 
    public Object invoke(Object proxy, Method m, Object[] args) throws Throwable
    {
-      // print implicit argument
+      // 打印隐含参数
       System.out.print(target);
-      // print method name
+      // 打印方法名
       System.out.print("." + m.getName() + "(");
-      // print explicit arguments
+      // 打印显式参数
       if (args != null)
       {
          for (int i = 0; i < args.length; i++)
@@ -68,7 +66,7 @@ class TraceHandler implements InvocationHandler
       }
       System.out.println(")");
 
-      // invoke actual method
+      // 执行实际的方法
       return m.invoke(target, args);
    }
 }
